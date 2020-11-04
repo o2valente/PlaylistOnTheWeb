@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tracks</title>
+</head>
+<body>
+<h2>{{ frase }}</h2>
+<ul>
+    {% for name,link in tracks.items %}
+        <li><a href="{{ link }}" target="_blank"> {{ name }}</a></li>
+    {% endfor %}
+</ul>
+</body>
+</html>
