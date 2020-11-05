@@ -14,9 +14,13 @@ def home(request):
     res = xmltodict.parse(query)
     print(res)
     for c in res["root"]["elem"]:
-        info[c["name"]] = c["spotify"],
-        info[c["name"]] = c["url"]
-    print(info)
+        info[c["name"]] = dict()
+        info[c["name"]]["url"] = c["spotify"],
+        info[c["name"]]["imagem"] = c["url"][2]
+    print(info.items())
+    for nome, url in info.items():
+        print(nome)
+        print(url)
     tparams = {
         'tracks': info,
         'frase': "Músicas da Playlist Pokémon LoFi:",

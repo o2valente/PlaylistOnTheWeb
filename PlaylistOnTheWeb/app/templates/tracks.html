@@ -7,8 +7,8 @@
 <body>
 <h2>{{ frase }}</h2>
 <ul>
-    {% for name,link,image in tracks.items %}
-        <li><img src="{{ image }}"/><a href="{{ link }}" target="_blank"> {{ name }}</a></li>
+    {% for name,dados in tracks.items %}
+        <li><img src="{{ dados.imagem }}"/><a href="{{ dados.url }}" target="_blank"> {{ name }}</a></li>
     {% endfor %}
 </ul>
 </body>
