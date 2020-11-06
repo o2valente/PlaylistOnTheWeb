@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>{{ frase }}</h2>
+
+<ul id="myTable">
+    {% for dados,name in artistas.items %}
+        <li><img style="width: 120px; height: 120px;" src="{{ img }}"/><a href="{{ img }}" target="_blank"> {{ name }}</a></li>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}

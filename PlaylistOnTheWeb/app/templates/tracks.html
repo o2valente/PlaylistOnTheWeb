@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Tracks</title>
-</head>
-<body>
+{% extends "layout.html" %}
+
+{% block content %}
+
 <h2>{{ frase }}</h2>
-<ul>
+<ul id="myTable">
     {% for name,dados in tracks.items %}
-        <li><img src="{{ dados.imagem }}"/><a href="{{ dados.url }}" target="_blank"> {{ name }}</a></li>
+        <li class="Hide"><img src="{{ dados.imagem }}"/><a href="{{ dados.url }}" target="_blank"> {{ name }}</a></li>
     {% endfor %}
 </ul>
-</body>
-</html>
+
+
+{% endblock %}

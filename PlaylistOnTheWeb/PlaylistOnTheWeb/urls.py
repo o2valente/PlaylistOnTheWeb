@@ -19,5 +19,9 @@ from app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home)
+    path('', views.home),
+    path('home/', views.home, name='home'),
+    path('artistas/', views.artistas, name='artistas'),
+    path('musicas/', views.musicas, name='musicas'),
+    path('criarPlayList/', views.criarPlayList, name='criarPlayList'),
 ]
