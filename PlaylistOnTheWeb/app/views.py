@@ -40,16 +40,16 @@ def home(request):
     # print(query)
     info = dict()
     res = xmltodict.parse(query)
-    print(res)
+    # print(res)
     for c in res["root"]["elem"]:
         print(c)
         info[c["name"]] = dict()
         info[c["name"]]["url"] = c["spotify"]
         info[c["name"]]["imagem"] = c["url"][2]
-    print(info.items())
-    for nome, url in info.items():
-        print(nome)
-        print(url)
+    # print(info.items())
+    # for nome, url in info.items():
+    #     print(nome)
+    #     print(url)
     tparams = {
         'tracks': info,
         'frase': "Músicas da Playlist Pokémon LoFi:",
@@ -67,7 +67,7 @@ def buscar_imagens(url, access_token):
 
 
 def artistas(request):
-    input = "xquery <root>{ for $a in collection('SpotifyPlaylist')//owner return <elem>{$a}</elem> } </root>"
+    input = "xquery <root>{ for $a in distinct-values(collection('SpotifyPlaylist')//track/artists/element/name) let $b := (collection('SpotifyPlaylist')//track/artists/element[name = $a])[1] return<artista>{$b/href} {$b/name}</artista>}</root>"
     query = session.execute(input)
     # print(query)
     info = dict()
@@ -77,15 +77,13 @@ def artistas(request):
     # print(res["root"]["elem"]["owner"]["display_name"])
     # print(res["root"]["elem"]["owner"]["href"])
     access_token = get_token()
-    if (len(res["root"]["elem"]) == 1):
-        img = buscar_imagens(res["root"]["elem"]["owner"]["href"], access_token)
-        info[res["root"]["elem"]["owner"]["display_name"]] = img
+    if (len(res["root"]["artista"]) == 1):
+        img = buscar_imagens(res["root"]["artista"]["href"], access_token)
+        info[res["root"]["artista"]["name"]] = img
     else:
-        for c in res["root"]["elem"]:
-            print(c)
-            img = buscar_imagens(c["owner"]["href"], access_token)
-            print(c["display_name"])
-            info[c["display_name"]] = img
+        for c in res["root"]["artista"]:
+            img = buscar_imagens(c["href"], access_token)
+            info[c["name"]] = img
     print(info.items())
 
     tparams = {
