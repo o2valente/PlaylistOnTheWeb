@@ -95,7 +95,14 @@ def artist_tracks(request):
     info = dict()
     res = xmltodict.parse(query)
     res_name = xmltodict.parse(art_name)
-    for a in res["root"]["elem"]:
+    if isinstance(res["root"]["elem"], list):
+        for a in res["root"]["elem"]:
+            info[a["name"]] = dict()
+            info[a["name"]]["url"] = a["spotify"]
+            info[a["name"]]["imagem"] = a["url"]
+            info[a["name"]]["embed"] = a["spotify"][:25] + 'embed/' + a["spotify"][25:]
+    else:
+        a = res["root"]["elem"]
         info[a["name"]] = dict()
         info[a["name"]]["url"] = a["spotify"]
         info[a["name"]]["imagem"] = a["url"]
