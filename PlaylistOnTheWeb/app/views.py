@@ -32,8 +32,13 @@ def get_token():
     access_token = auth_response_data['access_token']
     return access_token
 
-
 def home(request):
+    tparams = {
+        'frase': "Home:",
+    }
+    return render(request, "home.html", tparams)
+
+def musicas(request):
     access_token = get_token()
     input = "xquery <root>{ for $a in collection('SpotifyPlaylist')//element/track return <elem> {$a/name} {" \
             "$a/external_urls/spotify} {$a/album/images/element/url} { for $b in $a/artists/element return <artista> " \
@@ -48,7 +53,7 @@ def home(request):
         info[c["name"]] = dict()
         info[c["name"]]["url"] = c["spotify"]
         info[c["name"]]["imagem"] = c["url"][2]
-        info[c["name"]]["embed"] = c["spotify"][:25] + 'embed/' + c["spotify"][25:]
+        #info[c["name"]]["embed"] = c["spotify"][:25] + 'embed/' + c["spotify"][25:]
         info[c["name"]]["artistas"] = dict()
         if isinstance(c["artista"], list):
             for art in c["artista"]:
@@ -100,7 +105,7 @@ def artist_tracks(request):
         'tracks': info,
         'frase': "Músicas do Artistas: " + res_name["root"]["name"]
     }
-    return render(request, "tracks.html", tparams)
+    return render(request, "artist_tracks.html", tparams)
 
 
 def artistas(request):
@@ -135,10 +140,6 @@ def artistas(request):
         'frase': "Artistas:",
     }
     return render(request, "artistas.html", tparams)
-
-
-def musicas(request):
-    return HttpResponse("Musicas!")
 
 
 def criarPlayList(request):

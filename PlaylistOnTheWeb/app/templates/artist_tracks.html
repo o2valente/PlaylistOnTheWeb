@@ -5,12 +5,12 @@
     <table class="table table-fixed">
         <thead class="thead-dark">
             <tr>
-                <th width="700px;">{{ frase }}</th>
+                <th width="500px;">{{ frase }}</th>
                 {% if artistas %}
                     <th>Artista</th>
                 {% endif %}
 
-                <!--<th scope="col">Sample</th>-->
+                <th>Sample</th>
             </tr>
         </thead>
         <tbody id="data-table">
@@ -20,12 +20,12 @@
                 {% if artistas %}
                     <td>
                         {% for nome,id in dados.artistas.items %}
-                            <a href="{% url 'artistTracks' %}?id={{ id }}">{{ nome }}</a>
+                            <a href="{% url 'artistTracks' %}?id={{ id }}" target="_blank">{{ nome }}</a>
                             <br />
                         {% endfor %}
                     </td>
                 {% endif %}
-                <!--<td><iframe src="{{ dados.embed }}" width="270" height="80"></iframe></td>-->
+                <td><iframe src="{{ dados.embed }}" width="270" height="80"></iframe></td>
             </tr>
         {% endfor %}
         </tbody>

@@ -4,11 +4,12 @@
 
 <h2>{{ frase }}</h2>
 
-<ul id="myTable">
-    {% for name, dados in artistas.items %}
-        <li><img style="width: 120px; height: 120px;" src="{{ dados.imagem }}"/><a href="{% url 'artistTracks' %}?id={{ dados.id }}" target="_blank"> {{ name }}</a></li>
-    {% endfor %}
-</ul>
-
+<div class="content">
+    <ul id="myTable" class="breadcrumb">
+        {% for name, dados in artistas.items %}
+            <li><img style="width: 120px; height: 120px;" src="{{ dados.imagem }}"/><a href="{% url 'artistTracks' %}?id={{ dados.id }}"> {{ name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}

@@ -14,11 +14,21 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/site.css' %}" />
+    <!--Template-->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+h1,h2,h3,h4,h5,h6 {font-family: "Oswald"}
+body {font-family: "Open Sans"}
+</style>
+
 
 
   </head>
 
-  <body>
+  <body class="w3-light-grey">
 
     <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,22 +38,22 @@
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">
+          <!--<li class="nav-item">
             <a class="nav-link" href="../">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
+          </li>-->
+          <li class="nav-item" >
             <a class="nav-link" href="/artistas">Artistas</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/musicas">Musicas</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="/criarPlayList">Criar PlayList</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <input id="myInput"  class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
         </form>
       </div>
     </nav>
@@ -79,6 +89,14 @@
     $('#myInput').on('keyup', function () {
         var value = $(this).val().toLowerCase();
         $("#data-table tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+        //Filter Search
+    $('#myInput').on('keyup', function () {
+        var value = $(this).val().toLowerCase();
+        $("#myTable li").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });

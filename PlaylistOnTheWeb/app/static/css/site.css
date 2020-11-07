@@ -42,3 +42,44 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+body {
+	 background-color: #bdc3c7;
+}
+.table-fixed {
+    width: 100%;
+    background-color: #f3f3f3;
+}
+.table-fixed tbody {
+     height: 200px;
+     overflow-y: auto;
+     width: 100%;
+}
+
+.tableFixHead {
+  overflow: auto;
+  height: 800px;
+  width: 900px;
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  text-align: left;
+}
+
+.breadcrumb {
+    list-style: none;
+    padding: 0;
+}
+
+.breadcrumb > li {
+    display: inline;
+    width: 370px;
+}
+
+.breadcrumb > li:not(:last-child)::after {
+    content: "›";
+    margin: 0 .25em;
+}
+
