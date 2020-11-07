@@ -48,7 +48,9 @@ body {
 }
 .table-fixed {
     width: 100%;
-    background-color: #f3f3f3;
+    /* background-color: #f3f3f3; */
+    background-color: #E9ECEF;
+
 }
 .table-fixed tbody {
      height: 200px;
