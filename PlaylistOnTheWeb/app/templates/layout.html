@@ -7,13 +7,15 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Django WebProject</title>
+    <title>PlaylistOnTheWeb</title>
 
     {% load static %}
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/site.css' %}" />
+
+
   </head>
 
   <body>
@@ -76,7 +78,7 @@
     //Filter Search
     $('#myInput').on('keyup', function () {
         var value = $(this).val().toLowerCase();
-        $("#myTable li").filter(function () {
+        $("#data-table tr").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });

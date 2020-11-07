@@ -2,12 +2,33 @@
 
 {% block content %}
 
-<h2>{{ frase }}</h2>
-<ul id="myTable">
-    {% for name,dados in tracks.items %}
-        <li class="Hide"><img src="{{ dados.imagem }}"/><a href="{{ dados.url }}" target="_blank"> {{ name }}</a></li>
-    {% endfor %}
-</ul>
+    <table border="1" cellpadding="20" cellspacing="50">
+        <thead>
+            <tr>
+                <th>{{ frase }}</th>
+                {% if artistas %}
+                    <th>Artista</th>
+                {% endif %}
 
+                <th>Sample</th>
+            </tr>
+        </thead>
+        <tbody id="data-table">
+        {% for name,dados in tracks.items %}
+            <tr>
+                <td><img src="{{ dados.imagem }}"/> <a href="{{ dados.url }}" target="_blank"> {{ name }}</a>  </td>
+                {% if artistas %}
+                    <td>
+                        {% for nome,id in dados.artistas.items %}
+                            <a href="{% url 'artistTracks' %}?id={{ id }}" target="_blank">{{ nome }}</a>
+                            <br />
+                        {% endfor %}
+                    </td>
+                {% endif %}
+                <td><iframe src="{{ dados.embed }}" loading="lazy" width="270" height="80"></iframe></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
