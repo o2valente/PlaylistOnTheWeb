@@ -14,12 +14,13 @@ and is wrapped around the whole page content, except for the footer in this exam
   <!-- Header -->
   <header class="w3-container w3-center w3-padding-48 w3-white">
     <h1 class="w3-xxxlarge"><b>PlayList On The WEB</b></h1>
-    <h6>Customize your <span class="w3-tag">Spotify PlayList</span></h6>
+    <h6>Discover <span class="w3-tag">Spotify PlayList</span></h6>
   </header>
 
   <!-- Image header -->
   <header class="w3-display-container w3-wide" id="home">
-    <img class="w3-image" src="../static/1*-0vW8zx_gBNEb95OP5Uptg.png" alt="Fashion Blog" width="1600" height="1060">
+    <img class="w3-image" src="../static/1*-0vW8zx_gBNEb95OP5Uptg.png" alt="Fashion Blog" width="1600" height="800">
+
     <!--<div class="w3-display-left w3-padding-large">
       <h1 class="w3-text-white">Jane's</h1>
       <h1 class="w3-jumbo w3-text-white w3-hide-small"><b>FASHION BLOG</b></h1>
@@ -41,10 +42,10 @@ and is wrapped around the whole page content, except for the footer in this exam
         </div>
 
         <div class="w3-justify">
-          <p>Já sentiu a necessidade de criar a sua própria PlayList baseada noutra PLayList? Esta é uma boa oportunidade de o fazer,
-              usufrua da nossa web aplication para criar já a sua PlayList </p>
+          <p>Have you ever fealt the need to create your own PlayList based on another PlayList?
+              This is your chance of doing so, enjoy our WebApp and create your PlayList now!</p>
           <!--<p class="w3-left"><button class="w3-button w3-white w3-border" onclick="likeFunction(this)"><b><i class="fa fa-thumbs-up"></i> Like</b></button></p>-->
-          <p class="w3-center"><button class="w3-button w3-black" id="myBtn"><b>CRIAR PLAYLIST  </b></button></p>
+          <p class="w3-center"><a class="w3-button w3-black" id="myBtn" href="{% url 'criarPlayList' %}" target="_blank"><b>CREATE PLAYLIST </b></a></p>
           <p class="w3-clear"></p>
           <div class="w3-row w3-margin-bottom" id="demo1" style="display:none">
             <hr>
@@ -67,9 +68,9 @@ and is wrapped around the whole page content, except for the footer in this exam
         </div>
 
         <div class="w3-justify">
-          <p>É possível também a consulta de todas as musicas existentes em todas as PlayLists e a consulta de todos os Artistas presentes nas mesmas!</p>
-          <p class="w3-center"><button class="w3-button w3-black" id="myBtn"><b>CONSULTAR MÚSICAS  </b></button></p>
-          <p class="w3-center"><button class="w3-button w3-black" id="myBtn"><b>CONSULTAR ARTISTAS  </b></button></p>
+          <p >It is also possible to consult the songs from a PlayList and the artists with featured songs!</p>
+          <p class="w3-center"><a class="w3-button w3-black" id="myBtn" href="{% url 'musicas' %}" target="_blank"> <b>CHECK SONGS  </b></a> </p>
+          <p class="w3-center"><a class="w3-button w3-black" id="myBtn" href="{% url 'artistas' %}" target="_blank"><b>CHECK ARTISTS  </b></a></p>
 
           <p class="w3-clear"></p>
 
@@ -105,8 +106,9 @@ and is wrapped around the whole page content, except for the footer in this exam
       <!-- About Card -->
       <div class="w3-white w3-margin">
         <div class="w3-container w3-black">
-          <h4>My Name</h4>
-          <p>Just me, myself and I, exploring the universe of uknownment. I have a heart of love and a interest of lorem ipsum and mauris neque quam blog. I want to share my world with you.</p>
+          <h4>This Project</h4>
+            <p>A project made in Django and BaseX that displays information retrieved from Spotify's API on a Web Application.</p>
+             <p> Project made for the course EDC from MSc in Computer and Telematics Engineering Student at Universidade de Aveiro.</p>
         </div>
       </div>
       <hr>
@@ -114,34 +116,23 @@ and is wrapped around the whole page content, except for the footer in this exam
       <!-- Posts -->
       <div class="w3-white w3-margin">
         <div class="w3-container w3-padding w3-black">
-          <h4>Popular Posts</h4>
+          <h4>Popular Songs</h4>
         </div>
-        <ul class="w3-ul w3-hoverable w3-white">
-          <li class="w3-padding-16">
-            <img src="/w3images/avatar_smoke.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-            <span class="w3-large">Denim</span>
-            <br>
-            <span>Sed mattis nunc</span>
-          </li>
-          <li class="w3-padding-16">
-            <img src="/w3images/bandmember.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-            <span class="w3-large">Sweaters</span>
-            <br>
-            <span>Praes tinci sed</span>
-          </li>
-          <li class="w3-padding-16">
-            <img src="/w3images/workshop.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-            <span class="w3-large">Workshop</span>
-            <br>
-            <span>Ultricies congue</span>
-          </li>
-          <li class="w3-padding-16">
-            <img src="/w3images/avatar_smoke.jpg" alt="Image" class="w3-left w3-margin-right w3-sepia" style="width:50px">
-            <span class="w3-large">Trends</span>
-            <br>
-            <span>Lorem ipsum dipsum</span>
-          </li>
-        </ul>
+
+          {% for name,dados in tracks.items %}
+              <ul class="w3-ul w3-hoverable w3-white">
+                  <li class="w3-padding-16">
+                <img src="{{ dados.imagem }}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+                <a class="w3-large" href="{{ dados.url }}" target="_blank"> {{ name }}</a>
+                <br />
+                    {% for nome,id in dados.artistas.items %}
+                        <a href="{% url 'artistTracks' %}?id={{ id }}" target="_blank">{{ nome }}</a>
+                    {% endfor %}
+                   </li>
+               </ul>
+          {% endfor %}
+
+
       </div>
       <hr>
 

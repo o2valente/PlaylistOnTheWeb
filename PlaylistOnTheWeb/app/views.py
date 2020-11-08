@@ -7,6 +7,7 @@ from BaseXClient import BaseXClient
 from lxml import etree
 import xmltodict
 import requests
+import random
 
 # Create your views here.
 
@@ -32,11 +33,40 @@ def get_token():
     access_token = auth_response_data['access_token']
     return access_token
 
+
 def home(request):
+    input = "xquery <root>{ for $a in collection('SpotifyPlaylist')//element/track return <elem> {$a/name} {" \
+            "$a/external_urls/spotify} {$a/album/images/element/url} { for $b in $a/artists/element return <artista> " \
+            "{$b/name} {$b/id} </artista> } </elem> } </root> "
+    query = session.execute(input)
+    # print(query)
+    info = dict()
+    res = xmltodict.parse(query)
+    # print(res)
+    count = 0
+    for c in res["root"]["elem"]:
+        # print(c)
+        c = random.choice(res["root"]["elem"])
+        print(c)
+        if count < 4:
+            info[c["name"]] = dict()
+            info[c["name"]]["url"] = c["spotify"]
+            info[c["name"]]["imagem"] = c["url"][2]
+            # info[c["name"]]["embed"] = c["spotify"][:25] + 'embed/' + c["spotify"][25:]
+            info[c["name"]]["artistas"] = dict()
+            if isinstance(c["artista"], list):
+                for art in c["artista"]:
+                    info[c["name"]]["artistas"][art["name"]] = art["id"]
+            else:
+                info[c["name"]]["artistas"][c["artista"]["name"]] = c["artista"]["id"]
+        count += 1
+
     tparams = {
+        'tracks': info,
         'frase': "Home:",
     }
     return render(request, "home.html", tparams)
+
 
 def musicas(request):
     access_token = get_token()
@@ -53,7 +83,7 @@ def musicas(request):
         info[c["name"]] = dict()
         info[c["name"]]["url"] = c["spotify"]
         info[c["name"]]["imagem"] = c["url"][2]
-        #info[c["name"]]["embed"] = c["spotify"][:25] + 'embed/' + c["spotify"][25:]
+        # info[c["name"]]["embed"] = c["spotify"][:25] + 'embed/' + c["spotify"][25:]
         info[c["name"]]["artistas"] = dict()
         if isinstance(c["artista"], list):
             for art in c["artista"]:
