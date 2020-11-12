@@ -35,9 +35,7 @@ def get_token():
 
 
 def home(request):
-    input = "xquery <root>{ for $a in collection('SpotifyPlaylist')//element/track return <elem> {$a/name} {" \
-            "$a/external_urls/spotify} {$a/album/images/element/url} { for $b in $a/artists/element return <artista> " \
-            "{$b/name} {$b/id} </artista> } </elem> } </root> "
+    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:home()"
     query = session.execute(input)
     # print(query)
     info = dict()
@@ -70,9 +68,7 @@ def home(request):
 
 def musicas(request):
     access_token = get_token()
-    input = "xquery <root>{ for $a in collection('SpotifyPlaylist')//element/track return <elem> {$a/name} {" \
-            "$a/external_urls/spotify} {$a/album/images/element/url} { for $b in $a/artists/element return <artista> " \
-            "{$b/name} {$b/id} </artista> } </elem> } </root> "
+    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:musicas()"
     query = session.execute(input)
     # print(query)
     info = dict()
@@ -146,9 +142,7 @@ def artist_tracks(request):
 
 
 def artistas(request):
-    input = "xquery <root>{ for $a in distinct-values(collection('SpotifyPlaylist')//track/artists/element/name) let " \
-            "$b := (collection('SpotifyPlaylist')//track/artists/element[name = $a])[1] return<artista>{$b/href} {" \
-            "$b/id} {$b/name}</artista>}</root> "
+    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:buscar-artistas() "
     query = session.execute(input)
     # print(query)
     info = dict()
@@ -158,18 +152,15 @@ def artistas(request):
     # print(res["root"]["elem"])
     # print(res["root"]["elem"]["owner"]["display_name"])
     # print(res["root"]["elem"]["owner"]["href"])
-    access_token = get_token()
     if len(res["root"]["artista"]) == 1:
-        img = buscar_imagens(res["root"]["artista"]["href"], access_token)
         info[res["root"]["artista"]["name"]] = dict()
         info[res["root"]["artista"]["name"]]["id"] = res["root"]["artista"]["id"]
-        info[res["root"]["artista"]["name"]]["imagem"] = img
+        info[res["root"]["artista"]["name"]]["imagem"] = res["root"]["artista"]["imagem"]
     else:
         for c in res["root"]["artista"]:
-            img = buscar_imagens(c["href"], access_token)
             info[c["name"]] = dict()
             info[c["name"]]["id"] = c["id"]
-            info[c["name"]]["imagem"] = img
+            info[c["name"]]["imagem"] = c["imagem"]
     print(info.items())
 
     tparams = {
@@ -180,4 +171,21 @@ def artistas(request):
 
 
 def criarPlayList(request):
+    input = "xquery <root>{ for $a in distinct-values(collection('SpotifyPlaylist')//track/artists/element/name) let " \
+            "$b := (collection('SpotifyPlaylist')//track/artists/element[name = $a])[1] return<artista>{$b/href} {" \
+            "$b/id} {$b/name}</artista>}</root> "
+    query = session.execute(input)
+    res = xmltodict.parse(query)
+    access_token = get_token()
+    if len(res["root"]["artista"]) == 1:
+        img = buscar_imagens(res["root"]["artista"]["href"], access_token)
+        insert = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:insert-imagem-artista('{}','{}')".format(res["root"]["artista"]["id"],img)
+        session.execute(insert)
+    else:
+        for c in res["root"]["artista"]:
+            img = buscar_imagens(c["href"], access_token)
+            insert = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:insert-imagem-artista('{}','{}')".format(
+                c["id"], img)
+            session.execute(insert)
+
     return HttpResponse("Cria a tua PlayList!")
