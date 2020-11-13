@@ -8,6 +8,8 @@ from lxml import etree
 import xmltodict
 import requests
 import random
+from lxml import etree
+import datetime
 
 # Create your views here.
 
@@ -32,6 +34,41 @@ def get_token():
     # save the access token
     access_token = auth_response_data['access_token']
     return access_token
+
+def criarxml(Id, name, numeroMusicas, musicasInfo): # musicas é dict
+    playlistDemo = etree.Element("playlistDemo", id=Id)
+    nome = etree.SubElement(playlistDemo,"nome")
+    nome.text = name
+    id = etree.SubElement(playlistDemo, "id")
+    id.text = Id
+    numeroDeMusicas = etree.SubElement(playlistDemo, "numeroDeMusicas")
+    numeroDeMusicas.text = numeroMusicas
+    dataCriacao = etree.SubElement(playlistDemo, "dataCriacao")
+    dataCriacao.text = str(datetime.date.today())
+    musicas = etree.SubElement(playlistDemo,"musicas")
+    for n, dados in musicasInfo.items():
+        musica = etree.SubElement(musicas,"musica")
+        nome = etree.SubElement(musica,"nome")
+        nome.text = n
+        id = etree.SubElement(musica, "id")
+        id.text = dados["id"]
+        externalUrl = etree.SubElement(musica,"externalUrl")
+        externalUrl.text = dados["externalUrl"]
+        img = etree.SubElement(musica,"img")
+        img.text = dados["img"]
+        artistas = etree.SubElement(musica,"artistas")
+        for a, i in dados["artistas"].items():
+            artista = etree.SubElement(artistas,"artista")
+            nome = etree.SubElement(artista,"nome")
+            nome.text = a
+            id = etree.SubElement(artista,"id")
+            id.text = i
+
+    print(etree.tostring(playlistDemo))
+    xsd_root = etree.parse("files/example.xsd")
+    schema = etree.XMLSchema(xsd_root)
+    print(schema.validate(playlistDemo))
+
 
 
 def home(request):
@@ -195,8 +232,28 @@ def criarPlayList(request):
         print(request.POST)
         nomes = request.POST.getlist('nameMusica')
         print(nomes)
+        musicas = dict()
         for nMusicas in nomes:
             print(nMusicas)
+            input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:info-musica('{}')".format(nMusicas)
+            query = session.execute(input)
+            res = xmltodict.parse(query)
+            print(res["root"]["elem"])
+            musica = res["root"]["elem"]
+            musicas[musica["name"]] = dict()
+            musicas[musica["name"]]["id"] = musica["id"]
+            musicas[musica["name"]]["externalUrl"] = musica["spotify"]
+            musicas[musica["name"]]["img"] = musica["url"]
+            musicas[musica["name"]]["artistas"] = dict()
+            if isinstance(musica["artista"], list):
+                for art in musica["artista"]:
+                    musicas[musica["name"]]["artistas"][art["name"]] = art["id"]
+            else:
+                musicas[musica["name"]]["artistas"][art["name"]] = art["id"]
+
+        criarxml("1","teste","2",musicas)
+
+
 
 
     access_token = get_token()

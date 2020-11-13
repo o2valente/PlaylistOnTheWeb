@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="example.xsd">
-    <playlistDemo id="1">
-        <nome>Espanhol</nome>
-        <id>1</id>
-        <numeroDeMusicas>10</numeroDeMusicas>
-        <dataCriacao>2020-11-13</dataCriacao>
-        <musicas>
-            <musica>
-                <nome>Bolero</nome>
-                <id>23sdfg678fd91</id>
-                <externalUrl>https://open.spotify.com/artist/4GGm7CoOaCNFLMnFInNiMG</externalUrl>
-                <img>https://i.scdn.co/image/ab67616d00004851a737ec66a9ef6c6d817a7756</img>
-                <artistas>
-                    <artista>
-                        <nome>Auria</nome>
-                        <id>23sdfg678fd91</id>
-                    </artista>
-                </artistas>
-            </musica>
-        </musicas>
-    </playlistDemo>
-</root>
+<playlistDemo id="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="example.xsd" >
+    <nome>Espanhol</nome>
+    <id>1</id>
+    <numeroDeMusicas>10</numeroDeMusicas>
+    <dataCriacao>2020-11-13</dataCriacao>
+    <musicas>
+        <musica>
+            <nome>Bolero</nome>
+            <id>23sdfg678fd91</id>
+            <externalUrl>https://open.spotify.com/artist/4GGm7CoOaCNFLMnFInNiMG</externalUrl>
+            <img>https://i.scdn.co/image/ab67616d00004851a737ec66a9ef6c6d817a7756</img>
+            <artistas>
+                <artista>
+                    <nome>Auria</nome>
+                    <id>23sdfg678fd91</id>
+                </artista>
+            </artistas>
+        </musica>
+    </musicas>
+</playlistDemo>

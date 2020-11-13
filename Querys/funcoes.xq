@@ -44,5 +44,18 @@ declare function funcsPlaylist:musicas(){
        return <artista> {$b/name} {$b/id} </artista> } </elem> } </root>
 };
 
+declare function funcsPlaylist:info-musica($id){
+  <root>{
+      for $a in collection('SpotifyPlaylist')//element/track[id/text()=$id]
+      return <elem>
+          {$a/name}
+          {$a/id}
+          {$a/external_urls/spotify}
+          {($a/album/images/element/url)[last()]} {
+          for $b in $a/artists/element
+           return <artista> {$b/name} {$b/id} </artista> }
+          </elem>
+  }</root>
+};
 
 
