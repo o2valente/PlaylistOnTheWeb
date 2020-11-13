@@ -37,7 +37,8 @@ declare function funcsPlaylist:musicas(){
     for $a in collection('SpotifyPlaylist')//element/track 
     return <elem> 
       {$a/name} 
-      {$a/external_urls/spotify} 
+      {$a/external_urls/spotify}
+      {$a/id}
       {$a/album/images/element/url} { 
       for $b in $a/artists/element
        return <artista> {$b/name} {$b/id} </artista> } </elem> } </root>

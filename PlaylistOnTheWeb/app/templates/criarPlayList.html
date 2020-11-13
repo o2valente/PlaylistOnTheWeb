@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container tableFixHead">
+<form action='.' method='post'>
+    {% csrf_token %}
+        <table class="table table-fixed" name="resultsTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th style="max-width: 100px;"><input type="submit" name="Submit!" value="Criar"/></th>
+
+                    <th width="700px;">{{ frase }} </th>
+
+                    {% if artistas %}
+                        <th>Artista</th>
+                    {% endif %}
+
+                    <!--<th scope="col">Sample</th>-->
+                </tr>
+            </thead>
+            <tbody id="data-table">
+            {% for name,dados in tracks.items %}
+                <tr>
+                    <td style="text-align:center; vertical-align: middle;">
+                        <input type="checkbox" id="var{{ forloop.counter }}" name="nameMusica" value="{{ dados.id }}">
+                    </td>
+                    <td>
+                        <img src="{{ dados.imagem }}"/> <a href="{{ dados.url }}" target="_blank"> {{ name }}</a>
+                    </td>
+                    {% if artistas %}
+                        <td>
+                            {% for nome,id in dados.artistas.items %}
+                                <a href="{% url 'artistTracks' %}?id={{ id }}">{{ nome }}</a>
+                                <br />
+                            {% endfor %}
+                        </td>
+                    {% endif %}
+                    <!--<td><iframe src="{{ dados.embed }}" width="270" height="80"></iframe></td>-->
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</div>
+
+{% endblock %}

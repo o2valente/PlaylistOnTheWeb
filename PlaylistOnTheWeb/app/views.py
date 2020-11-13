@@ -170,22 +170,75 @@ def artistas(request):
     return render(request, "artistas.html", tparams)
 
 
-def criarPlayList(request):
-    input = "xquery <root>{ for $a in distinct-values(collection('SpotifyPlaylist')//track/artists/element/name) let " \
-            "$b := (collection('SpotifyPlaylist')//track/artists/element[name = $a])[1] return<artista>{$b/href} {" \
-            "$b/id} {$b/name}</artista>}</root> "
-    query = session.execute(input)
-    res = xmltodict.parse(query)
-    access_token = get_token()
-    if len(res["root"]["artista"]) == 1:
-        img = buscar_imagens(res["root"]["artista"]["href"], access_token)
-        insert = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:insert-imagem-artista('{}','{}')".format(res["root"]["artista"]["id"],img)
-        session.execute(insert)
-    else:
-        for c in res["root"]["artista"]:
-            img = buscar_imagens(c["href"], access_token)
-            insert = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:insert-imagem-artista('{}','{}')".format(
-                c["id"], img)
-            session.execute(insert)
+#def criarPlayList(request):
+#    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:buscar-artistas()"
+#    query = session.execute(input)
+#   access_token = get_token()
+#    if len(res["root"]["artista"]) == 1:
+#        img = buscar_imagens(res["root"]["artista"]["href"], access_token)
+#        insert = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:insert-imagem-artista('{}','{}')".format(res["root"]["artista"]["id"],img)
+#        session.execute(insert)
+#    else:
+#        for c in res["root"]["artista"]:
+#            img = buscar_imagens(c["href"], access_token)
+#            insert = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:insert-imagem-artista('{}','{}')".format(
+#                c["id"], img)
+#            session.execute(insert)
+#
+#    return HttpResponse("Cria a tua PlayList!")
 
-    return HttpResponse("Cria a tua PlayList!")
+def criarPlayList(request):
+
+    nomeMusicas = []
+
+    if 'nameMusica' in request.POST:
+        print(request.POST)
+        nomes = request.POST.getlist('nameMusica')
+        print(nomes)
+        for nMusicas in nomes:
+            print(nMusicas)
+
+
+    access_token = get_token()
+    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:musicas()"
+    query = session.execute(input)
+    # print(query)
+    info = dict()
+    res = xmltodict.parse(query)
+    # print(res)
+    for c in res["root"]["elem"]:
+        # print(c)
+        info[c["name"]] = dict()
+        info[c["name"]]["url"] = c["spotify"]
+        info[c["name"]]["id"] = c["id"]
+        info[c["name"]]["imagem"] = c["url"][2]
+        # info[c["name"]]["embed"] = c["spotify"][:25] + 'embed/' + c["spotify"][25:]
+        info[c["name"]]["artistas"] = dict()
+        if isinstance(c["artista"], list):
+            for art in c["artista"]:
+                info[c["name"]]["artistas"][art["name"]] = art["id"]
+        else:
+            info[c["name"]]["artistas"][c["artista"]["name"]] = c["artista"]["id"]
+
+    #print(info.items())
+    # for nome, url, embed in info.items():
+    #     print(nome)
+    #     print(url)
+    #     print(embed)
+    tparams = {
+        'artistas': True,
+        'tracks': info,
+        'frase': "Músicas da Playlist Pokémon LoFi:",
+    }
+    return render(request, "criarPlayList.html", tparams)
+
+def playlist(request):
+    #if request.method == "POST":
+        #form = MyForm(request.POST)
+        #e = request.POST.getlist("choice_field")
+
+    c = {'form': 'ola'}
+
+    print('ola')
+    print(request.POST)
+    return render(request,"playlist.html", c)

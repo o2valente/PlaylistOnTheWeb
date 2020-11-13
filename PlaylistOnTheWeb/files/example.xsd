@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="root" type="rootType"/>
+  <xs:complexType name="artistaType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="nome"/>
+      <xs:element type="xs:string" name="id"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="artistasType">
+    <xs:sequence>
+      <xs:element type="artistaType" name="artista"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="musicaType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="nome"/>
+      <xs:element type="xs:string" name="id">
+      <xs:element type="xs:string" name="externalUrl"/>
+      <xs:element type="xs:string" name="img"/>
+      <xs:element type="artistasType" name="artistas"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="musicasType">
+    <xs:sequence>
+      <xs:element type="musicaType" name="musica"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="playlistDemoType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="nome"/>
+      <xs:element name="id">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+        </xs:restriction>
+      </xs:element>
+      <xs:element type="xs:string" name="numeroDeMusicas">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+        </xs:restriction>
+      </xs:element>
+      <xs:element type="xs:date" name="dataCriacao" />
+      <xs:element type="musicasType" name="musicas"/>
+    </xs:sequence>
+    <xs:attribute name="id">
+      <xs:restriction base="xs:integer">
+        <xs:minInclusive value="1"/>
+      </xs:restriction>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="rootType">
+    <xs:sequence>
+      <xs:element type="playlistDemoType" name="playlistDemo"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

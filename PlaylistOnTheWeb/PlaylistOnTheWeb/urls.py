@@ -24,5 +24,6 @@ urlpatterns = [
     path('artistas/', views.artistas, name='artistas'),
     path('musicas/', views.musicas, name='musicas'),
     path('criarPlayList/', views.criarPlayList, name='criarPlayList'),
-    path('artistTracks/', views.artist_tracks, name='artistTracks')
+    path('artistTracks/', views.artist_tracks, name='artistTracks'),
+    path('playlist/', views.playlist, name='playlist')
 ]
