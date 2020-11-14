@@ -9,6 +9,7 @@ import xmltodict
 import requests
 import random
 from lxml import etree
+from urllib.request import urlopen
 import datetime
 
 # Create your views here.
@@ -340,3 +341,41 @@ def playlist(request):
     print('ola')
     print(request.POST)
     return render(request,"playlist.html", c)
+
+def pageRSS(request):
+
+    url = 'https://pitchfork.com/rss/news/'
+    resp = requests.get(url)
+
+    # saving the xml file
+    with open('topnewsfeed.xml', 'wb') as f:
+        f.write(resp.content)
+
+    xml = etree.parse("topnewsfeed.xml")
+
+    xslt_file = etree.parse("files/pageRSS.xsl")
+    transform = etree.XSLT(xslt_file)
+    html = transform(xml.getroot())
+
+    tparams = {
+        'pageRSS': html,
+        'frase': "Page RSS:",
+    }
+    return render(request, "pageRSS.html", tparams)
+
+
+    #tree = etree.parse(urlopen(url))
+    #html = mostrar(tree.getroot(), "\t")
+    #return HttpResponse(html)
+    #return render(request, "pageRSS.html", tparams)
+
+def mostrar(xml, tabs):
+    string = ""
+    if len(xml) > 0:
+        string += "<p>" + tabs + xml.tag + ":</p>"
+        for e in xml:
+            string += mostrar(e, tabs + "&emsp;")
+    else:
+        if xml.text:
+            string += "<p>" + tabs + xml.tag + ": " + xml.text + "</p>"
+    return string

@@ -27,5 +27,6 @@ urlpatterns = [
     path('artistTracks/', views.artist_tracks, name='artistTracks'),
     path('playlist/', views.playlist, name='playlist'),
     path('albums/', views.albums, name='albums'),
-    path('myPlayList/', views.myPlayList, name='myPlayList')
+    path('myPlayList/', views.myPlayList, name='myPlayList'),
+    path('pageRSS/', views.pageRSS, name='pageRSS'),
 ]
