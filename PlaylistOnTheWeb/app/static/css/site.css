@@ -80,10 +80,40 @@ body {
     width: 370px;
 }
 
+/*a little bit of reset*/
+#breadcrumb_album, #breadcrumb_album p, #breadcrumb_album h3 {
+list-style: none;
+margin:0; padding:0;
+}
+
+#breadcrumb_album > li{
+  float:left;
+  margin-right: 20px;
+  width: 130px;
+}
+
+#breadcrumb_album > li > .image{
+  display:block;
+  float:left;
+  margin-right:10px;
+}
+
+/*
+this instructions are to force the dimensions of image and its container <a>
+*/
+#breadcrumb_album > li > .image,
+#breadcrumb_album > li > .image > img{
+  width:24px; height:24px;
+}
+
+
 .breadcrumb > li:not(:last-child)::after {
     content: "›";
     margin: 0 .25em;
 }
+
+
+
 /* Popup container - can be anything you want */
 .popup {
   position: relative;

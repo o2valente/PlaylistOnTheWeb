@@ -82,22 +82,20 @@ def home(request):
     res = xmltodict.parse(query)
     # print(res)
     count = 0
-    for c in res["root"]["elem"]:
+    for i in range(4):
         # print(c)
         c = random.choice(res["root"]["elem"])
         print(c)
-        if count < 4:
-            info[c["name"]] = dict()
-            info[c["name"]]["url"] = c["spotify"]
-            info[c["name"]]["imagem"] = c["url"][2]
-            # info[c["name"]]["embed"] = c["spotify"][:25] + 'embed/' + c["spotify"][25:]
-            info[c["name"]]["artistas"] = dict()
-            if isinstance(c["artista"], list):
-                for art in c["artista"]:
-                    info[c["name"]]["artistas"][art["name"]] = art["id"]
-            else:
-                info[c["name"]]["artistas"][c["artista"]["name"]] = c["artista"]["id"]
-        count += 1
+        info[c["name"]] = dict()
+        info[c["name"]]["url"] = c["spotify"]
+        info[c["name"]]["imagem"] = c["url"][2]
+        # info[c["name"]]["embed"] = c["spotify"][:25] + 'embed/' + c["spotify"][25:]
+        info[c["name"]]["artistas"] = dict()
+        if isinstance(c["artista"], list):
+            for art in c["artista"]:
+                info[c["name"]]["artistas"][art["name"]] = art["id"]
+        else:
+            info[c["name"]]["artistas"][c["artista"]["name"]] = c["artista"]["id"]
 
     tparams = {
         'tracks': info,
@@ -151,11 +149,8 @@ def buscar_imagens(url, access_token):
 
 def artist_tracks(request):
     id = str(request.GET.get('id'))
-    input = "xquery <root>{ for $a in collection('SpotifyPlaylist')//element/track[artists/element/id/text()='" + id + \
-            "'] return <elem> {$a/name} {$a/external_urls/spotify} {($a/album/images/element/url)[last()]} </elem> } " \
-            "</root> "
-    input_name = "xquery <root>{ let $q := (collection('SpotifyPlaylist')//track/artists/element[id/text() ='" + id + \
-                 "'])[last()] return $q/name }</root> "
+    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:artist-tracks('{}')".format(id)
+    input_name = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:artist-name('{}')".format(id)
     query = session.execute(input)
     # print(query)
     art_name = session.execute(input_name)
@@ -222,6 +217,21 @@ def artistas(request):
     }
     return render(request, "artistas.html", tparams)
 
+
+def albums(request):
+    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:albums() "
+    query = session.execute(input)
+
+    xml = etree.fromstring(query)
+    xslt_file = etree.parse("files/albums.xsl")
+    transform = etree.XSLT(xslt_file)
+    html = transform(xml)
+
+    tparams = {
+        'albums': html,
+        'frase': "Albums:",
+    }
+    return render(request, "albums.html", tparams)
 
 #def criarPlayList(request):
 #    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:buscar-artistas()"

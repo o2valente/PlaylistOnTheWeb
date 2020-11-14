@@ -22,6 +22,12 @@ declare function funcsPlaylist:artist-tracks($aid){
 }</root>
 };
 
+declare function funcsPlaylist:artist-name($aid){
+ <root>{ 
+  let $q := (collection('SpotifyPlaylist')//track/artists/element[id/text()=$aid])[last()] return $q/name 
+ }</root>
+};
+
 declare function funcsPlaylist:home(){
   <root>{ 
     for $a in collection('SpotifyPlaylist')//element/track 
@@ -57,5 +63,24 @@ declare function funcsPlaylist:info-musica($id){
           </elem>
   }</root>
 };
+
+declare function funcsPlaylist:albums(){
+   <root>{ 
+    for $a in distinct-values(collection('SpotifyPlaylist')//element/track/album/name)
+      let $b := (collection("SpotifyPlaylist")//track/album[name = $a])[1] 
+        return <album> 
+          {$b/name} 
+          {$b/release_date}
+          {$b/total_tracks}
+          {($b/images/element/url)[last()]}
+          {$b/external_urls/spotify}
+          {$b/id}
+          {$b/album/images/element/url} { 
+          for $c in $b/artists/element
+           return <artista> {$c/name} {$c/id} </artista> } 
+        </album> 
+  }</root>
+};
+
 
 
