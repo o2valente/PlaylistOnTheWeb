@@ -5,11 +5,12 @@
 <h2>{{ frase }}</h2>
 
 <div class="content">
-    <ul id="myTable" class="breadcrumb">
+    {{ artistas | safe}}
+    {% comment %}<ul id="myTable" class="breadcrumb">
         {% for name, dados in artistas.items %}
             <li><img style="width: 120px; height: 120px;" src="{{ dados.imagem }}"/><a href="{% url 'artistTracks' %}?id={{ dados.id }}"> {{ name }}</a></li>
         {% endfor %}
-    </ul>
+    </ul>{% endcomment %}
 </div>
 
 {% endblock %}
