@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="root">
-        <ul id="breadcrumb_album">
+        <table id="breadcrumb_album"  class="breadcrumb">
+
+            <tbody>
             <xsl:for-each select="album">
-                <li >
-                    <img style="width: 120px; height: 120px;">
-                        <xsl:attribute name="src">
-                            <xsl:value-of select="url"/>
-                        </xsl:attribute>
-                    </img>
-                    <li >
+                <tr style="height: 160px;">
+                    <th>
+                        <img style="width: 120px; height: 120px;">
+                            <xsl:attribute name="src">
+                                <xsl:value-of select="url"/>
+                            </xsl:attribute>
+                        </img>
+                    </th>
+                    <th>
                         <xsl:variable name="spotify" select="spotify"/>
+                        <u><i>NAME:</i></u>
                         <a href="{$spotify}" target="_blank">
+                            <xsl:text>  </xsl:text>
                             <xsl:value-of select="name"/>
-                        </a>
-                        <span>Release Date: <xsl:value-of select="release_date"/> <br /></span>
-                        <span> Total Tracks: <xsl:value-of select="total_tracks"/> <br /></span>
+                        </a><br />
+                        <i>RELEASE DATE: </i><xsl:value-of select="release_date"/> <br />
+                        <i>TOTAL TRACKS: </i><xsl:value-of select="total_tracks"/> <br />
+                    <th>
+                        <u><i>ARTISTS:</i></u>
 
                         <xsl:for-each select="artista">
+                            <br />
                             <xsl:variable name="id" select="id"/>
                             <a href="http://127.0.0.1:8000/artistTracks?id={$id}" target="_blank">
                                 <xsl:value-of select="name"/>
                             </a>
-                            <br />
+
                         </xsl:for-each>
-                    </li>
-                </li>
+                    </th>
+                    </th>
+                </tr>
             </xsl:for-each>
-        </ul>
+            </tbody>
+        </table>
     </xsl:template>
 </xsl:stylesheet>

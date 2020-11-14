@@ -315,6 +315,21 @@ def criarPlayList(request):
     }
     return render(request, "criarPlayList.html", tparams)
 
+def myPlayList(request):
+    input = "xquery <root>{for $a in collection('SpotifyPlaylist')//playlistDemo return $a }</root>"
+    query = session.execute(input)
+
+    xml = etree.fromstring(query)
+    xslt_file = etree.parse("files/myPlayList.xsl")
+    transform = etree.XSLT(xslt_file)
+    html = transform(xml)
+
+    tparams = {
+        'playlist': html,
+        'frase': "Playlist:",
+    }
+    return render(request, "myPlayList.html", tparams)
+
 def playlist(request):
     #if request.method == "POST":
         #form = MyForm(request.POST)

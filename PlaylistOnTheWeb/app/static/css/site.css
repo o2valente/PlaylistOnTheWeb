@@ -89,7 +89,7 @@ margin:0; padding:0;
 #breadcrumb_album > li{
   float:left;
   margin-right: 20px;
-  width: 130px;
+  width: 140px;
 }
 
 #breadcrumb_album > li > .image{
@@ -107,7 +107,7 @@ this instructions are to force the dimensions of image and its container <a>
 }
 
 
-.breadcrumb > li:not(:last-child)::after {
+.breadcrumb > th:not(:last-child)::after {
     content: "›";
     margin: 0 .25em;
 }
