@@ -5,6 +5,11 @@ declare updating function funcsPlaylist:insert-imagem-artista($aid, $alink){
    return insert node <imagem>{$alink}</imagem> after $a/uri
 };
 
+declare updating function funcsPlaylist:delete-playlist($id){
+  let $n := (collection('SpotifyPlaylist')//newPlaylist/playlistDemo[id/text()=$id]) 
+  return delete node $n 
+};
+
 declare function funcsPlaylist:buscar-artistas() as element()*{
   <root>{ 
   for $a in distinct-values(collection('SpotifyPlaylist')//track/artists/element/name) 
@@ -86,6 +91,8 @@ declare function funcsPlaylist:last-playlistID(){
    let $id := (collection('SpotifyPlaylist')//newPlaylist/playlistDemo/id)
    return $id[last()]
 };
+
+
 
 
 

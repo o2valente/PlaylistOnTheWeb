@@ -2,7 +2,7 @@ import base64
 import json
 
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from BaseXClient import BaseXClient
 from lxml import etree
 import xmltodict
@@ -11,6 +11,7 @@ import random
 from lxml import etree
 from urllib.request import urlopen
 import datetime
+
 
 # Create your views here.
 
@@ -70,10 +71,11 @@ def criarxml(Id, name, numeroMusicas, musicasInfo):  # musicas é dict
     xsd_root = etree.parse("files/example.xsd")
     schema = etree.XMLSchema(xsd_root)
     print(schema.validate(playlistDemo))
-    input = "xquery let $bs := collection('SpotifyPlaylist') for $b in $bs return insert node " + etree.tostring(
-        playlistDemo).decode("utf-8") + " as last into $b//newPlaylist"
-    print(input)
-    session.execute(input)
+    if schema.validate(playlistDemo):
+        input = "xquery let $bs := collection('SpotifyPlaylist') for $b in $bs return insert node " + etree.tostring(
+            playlistDemo).decode("utf-8") + " as last into $b//newPlaylist"
+        print(input)
+        session.execute(input)
 
 
 def home(request):
@@ -258,16 +260,17 @@ def albums(request):
 #    return HttpResponse("Cria a tua PlayList!")
 
 def criarPlayList(request):
-
     lastID = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:last-playlistID()"
     query = session.execute(lastID)
 
-    #Verifica se esta alguma playlist na BD, se nao coloca o primeiro id a 1
+    # Verifica se esta alguma playlist na BD, se nao coloca o primeiro id a 1
     if query != '':
         res = xmltodict.parse(query)
         id = str(int(res["id"]) + 1)
     else:
         id = "1"
+
+    print("id:" + id)
 
     if 'nameMusica' in request.POST and 'playlistName' in request.POST:
         print(request.POST)
@@ -294,6 +297,7 @@ def criarPlayList(request):
                 musicas[musica["name"]]["artistas"][art["name"]] = art["id"]
 
         criarxml(id, request.POST['playlistName'], str(len(nomes)), musicas)
+        return redirect(myPlayList)
 
     access_token = get_token()
     input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:musicas()"
@@ -344,6 +348,14 @@ def myPlayList(request):
     }
     return render(request, "myPlayList.html", tparams)
 
+
+def delete(request):
+    id = request.GET['id']
+    print(id)
+    delete = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:delete-playlist({})".format(id)
+    session.execute(delete)
+
+    return redirect(myPlayList)
 
 def playlist(request):
     # if request.method == "POST":
