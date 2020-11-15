@@ -82,5 +82,10 @@ declare function funcsPlaylist:albums(){
   }</root>
 };
 
+declare function funcsPlaylist:last-playlistID(){
+   let $id := (collection('SpotifyPlaylist')//newPlaylist/playlistDemo/id)
+   return $id[last()]
+};
+
 
 

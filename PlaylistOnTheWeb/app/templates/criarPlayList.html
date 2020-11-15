@@ -4,6 +4,7 @@
 <div class="container tableFixHead">
 <form action='.' method='post'>
     {% csrf_token %}
+        <p>New Playlist name: <input type="text" name="playlistName"/></p>
         <table class="table table-fixed" name="resultsTable">
             <thead class="thead-dark">
                 <tr>

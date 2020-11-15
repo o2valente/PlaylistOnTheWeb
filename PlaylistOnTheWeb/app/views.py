@@ -36,9 +36,10 @@ def get_token():
     access_token = auth_response_data['access_token']
     return access_token
 
-def criarxml(Id, name, numeroMusicas, musicasInfo): # musicas é dict
+
+def criarxml(Id, name, numeroMusicas, musicasInfo):  # musicas é dict
     playlistDemo = etree.Element("playlistDemo", id=Id)
-    nome = etree.SubElement(playlistDemo,"nome")
+    nome = etree.SubElement(playlistDemo, "nome")
     nome.text = name
     id = etree.SubElement(playlistDemo, "id")
     id.text = Id
@@ -46,33 +47,33 @@ def criarxml(Id, name, numeroMusicas, musicasInfo): # musicas é dict
     numeroDeMusicas.text = numeroMusicas
     dataCriacao = etree.SubElement(playlistDemo, "dataCriacao")
     dataCriacao.text = str(datetime.date.today())
-    musicas = etree.SubElement(playlistDemo,"musicas")
+    musicas = etree.SubElement(playlistDemo, "musicas")
     for n, dados in musicasInfo.items():
-        musica = etree.SubElement(musicas,"musica")
-        nome = etree.SubElement(musica,"nome")
+        musica = etree.SubElement(musicas, "musica")
+        nome = etree.SubElement(musica, "nome")
         nome.text = n
         id = etree.SubElement(musica, "id")
         id.text = dados["id"]
-        externalUrl = etree.SubElement(musica,"externalUrl")
+        externalUrl = etree.SubElement(musica, "externalUrl")
         externalUrl.text = dados["externalUrl"]
-        img = etree.SubElement(musica,"img")
+        img = etree.SubElement(musica, "img")
         img.text = dados["img"]
-        artistas = etree.SubElement(musica,"artistas")
+        artistas = etree.SubElement(musica, "artistas")
         for a, i in dados["artistas"].items():
-            artista = etree.SubElement(artistas,"artista")
-            nome = etree.SubElement(artista,"nome")
+            artista = etree.SubElement(artistas, "artista")
+            nome = etree.SubElement(artista, "nome")
             nome.text = a
-            id = etree.SubElement(artista,"id")
+            id = etree.SubElement(artista, "id")
             id.text = i
 
     print(etree.tostring(playlistDemo))
     xsd_root = etree.parse("files/example.xsd")
     schema = etree.XMLSchema(xsd_root)
     print(schema.validate(playlistDemo))
-    input = "xquery let $bs := collection('SpotifyPlaylist') for $b in $bs return insert node " + etree.tostring(playlistDemo).decode("utf-8") + " after $b//playlist"
+    input = "xquery let $bs := collection('SpotifyPlaylist') for $b in $bs return insert node " + etree.tostring(
+        playlistDemo).decode("utf-8") + " as last into $b//newPlaylist"
     print(input)
     session.execute(input)
-
 
 
 def home(request):
@@ -150,8 +151,12 @@ def buscar_imagens(url, access_token):
 
 def artist_tracks(request):
     id = str(request.GET.get('id'))
-    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:artist-tracks('{}')".format(id)
-    input_name = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:artist-name('{}')".format(id)
+    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; " \
+            "funcsPlaylist:artist-tracks('{}')".format(
+        id)
+    input_name = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; " \
+                 "funcsPlaylist:artist-name('{}')".format(
+        id)
     query = session.execute(input)
     # print(query)
     art_name = session.execute(input_name)
@@ -234,7 +239,8 @@ def albums(request):
     }
     return render(request, "albums.html", tparams)
 
-#def criarPlayList(request):
+
+# def criarPlayList(request):
 #    input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:buscar-artistas()"
 #    query = session.execute(input)
 #   access_token = get_token()
@@ -253,16 +259,25 @@ def albums(request):
 
 def criarPlayList(request):
 
-    nomeMusicas = []
+    lastID = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:last-playlistID()"
+    query = session.execute(lastID)
 
-    if 'nameMusica' in request.POST:
+    #Verifica se esta alguma playlist na BD, se nao coloca o primeiro id a 1
+    if query != '':
+        res = xmltodict.parse(query)
+        id = str(int(res["id"]) + 1)
+    else:
+        id = "1"
+
+    if 'nameMusica' in request.POST and 'playlistName' in request.POST:
         print(request.POST)
         nomes = request.POST.getlist('nameMusica')
         print(nomes)
         musicas = dict()
         for nMusicas in nomes:
             print(nMusicas)
-            input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:info-musica('{}')".format(nMusicas)
+            input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:info-musica('{}')".format(
+                nMusicas)
             query = session.execute(input)
             res = xmltodict.parse(query)
             print(res["root"]["elem"])
@@ -278,10 +293,7 @@ def criarPlayList(request):
             else:
                 musicas[musica["name"]]["artistas"][art["name"]] = art["id"]
 
-        criarxml("1","teste","2",musicas)
-
-
-
+        criarxml(id, request.POST['playlistName'], str(len(nomes)), musicas)
 
     access_token = get_token()
     input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:musicas()"
@@ -304,7 +316,7 @@ def criarPlayList(request):
         else:
             info[c["name"]]["artistas"][c["artista"]["name"]] = c["artista"]["id"]
 
-    #print(info.items())
+    # print(info.items())
     # for nome, url, embed in info.items():
     #     print(nome)
     #     print(url)
@@ -315,6 +327,7 @@ def criarPlayList(request):
         'frase': "Músicas da Playlist Pokémon LoFi:",
     }
     return render(request, "criarPlayList.html", tparams)
+
 
 def myPlayList(request):
     input = "xquery <root>{for $a in collection('SpotifyPlaylist')//playlistDemo return $a }</root>"
@@ -331,19 +344,20 @@ def myPlayList(request):
     }
     return render(request, "myPlayList.html", tparams)
 
+
 def playlist(request):
-    #if request.method == "POST":
-        #form = MyForm(request.POST)
-        #e = request.POST.getlist("choice_field")
+    # if request.method == "POST":
+    # form = MyForm(request.POST)
+    # e = request.POST.getlist("choice_field")
 
     c = {'form': 'ola'}
 
     print('ola')
     print(request.POST)
-    return render(request,"playlist.html", c)
+    return render(request, "playlist.html", c)
+
 
 def pageRSS(request):
-
     url = 'https://pitchfork.com/rss/news/'
     resp = requests.get(url)
 
@@ -359,11 +373,11 @@ def pageRSS(request):
     }
     return render(request, "pageRSS.html", tparams)
 
+    # tree = etree.parse(urlopen(url))
+    # html = mostrar(tree.getroot(), "\t")
+    # return HttpResponse(html)
+    # return render(request, "pageRSS.html", tparams)
 
-    #tree = etree.parse(urlopen(url))
-    #html = mostrar(tree.getroot(), "\t")
-    #return HttpResponse(html)
-    #return render(request, "pageRSS.html", tparams)
 
 def mostrar(xml, tabs):
     string = ""
