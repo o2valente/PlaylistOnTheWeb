@@ -347,15 +347,11 @@ def pageRSS(request):
     url = 'https://pitchfork.com/rss/news/'
     resp = requests.get(url)
 
-    # saving the xml file
-    with open('topnewsfeed.xml', 'wb') as f:
-        f.write(resp.content)
-
-    xml = etree.parse("topnewsfeed.xml")
+    xml = etree.fromstring(resp.content)
 
     xslt_file = etree.parse("files/pageRSS.xsl")
     transform = etree.XSLT(xslt_file)
-    html = transform(xml.getroot())
+    html = transform(xml)
 
     tparams = {
         'pageRSS': html,

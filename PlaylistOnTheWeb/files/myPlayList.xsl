@@ -12,18 +12,18 @@
             <xsl:for-each select="playlistDemo">
                 <tr style="height: 130px;">
                     <th style="width: 200px;">
-                        <u><i>NAME: </i></u>
+                        <u><i>NAME:</i></u> <xsl:text>  </xsl:text>
                         <xsl:value-of select="nome"/> <br />
-                        <u><i>ID: </i></u>
+                        <u><i>ID:</i></u> <xsl:text>  </xsl:text>
                         <xsl:value-of select="id"/>  <br />
-                        <u><i>TRACKS: </i></u>
+                        <u><i>TRACKS:</i></u> <xsl:text>  </xsl:text>
                         <xsl:value-of select="numeroDeMusicas"/>  <br />
-                        <u><i>DATE: </i></u>
+                        <u><i>DATE:</i></u> <xsl:text>  </xsl:text>
                         <xsl:value-of select="dataCriacao"/>
                         </th>
                     <th class="dropdown">
 
-                            <button class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                            <button class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown">MUSICS
                             <span class="caret"></span></button>
                         <ul class="dropdown-menu">
                         <xsl:for-each select="musicas/musica">
