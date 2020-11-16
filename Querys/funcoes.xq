@@ -10,6 +10,12 @@ declare updating function funcsPlaylist:delete-playlist($id){
   return delete node $n 
 };
 
+declare updating function funcsPlaylist:new-playlist($node){
+  let $bs := collection('SpotifyPlaylist') 
+  for $b in $bs 
+    return insert node $node as last into $b//newPlaylist
+};
+
 declare function funcsPlaylist:buscar-artistas() as element()*{
   <root>{ 
   for $a in distinct-values(collection('SpotifyPlaylist')//track/artists/element/name) 

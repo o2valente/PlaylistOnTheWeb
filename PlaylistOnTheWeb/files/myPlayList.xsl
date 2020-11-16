@@ -20,11 +20,10 @@
                             <xsl:value-of select="numeroDeMusicas"/>  <br />
                             <u><i>DATE:</i></u> <xsl:text>  </xsl:text>
                             <xsl:value-of select="dataCriacao"/>
-                            </th>
+                        </th>
                         <th class="dropdown">
-
-                                <button class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown">MUSICS
-                                <span class="caret"></span></button>
+                            <button class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown">MUSICS
+                            <span class="caret"></span></button>
                             <ul class="dropdown-menu">
                             <xsl:for-each select="musicas/musica">
                                 <option>
@@ -41,7 +40,6 @@
                                 </option>
                             </xsl:for-each>
                             </ul>
-
                         </th>
                         <th>
                             <xsl:variable name="temp" select="id"/>
@@ -49,7 +47,6 @@
                                 Remove
                             </button>
                         </th>
-
                     </tr>
                 </xsl:for-each>
                 </tbody>

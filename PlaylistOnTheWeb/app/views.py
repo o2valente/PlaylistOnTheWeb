@@ -72,8 +72,8 @@ def criarxml(Id, name, numeroMusicas, musicasInfo):  # musicas é dict
     schema = etree.XMLSchema(xsd_root)
     print(schema.validate(playlistDemo))
     if schema.validate(playlistDemo):
-        input = "xquery let $bs := collection('SpotifyPlaylist') for $b in $bs return insert node " + etree.tostring(
-            playlistDemo).decode("utf-8") + " as last into $b//newPlaylist"
+        input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:home({})".format(etree.tostring(
+            playlistDemo).decode("utf-8"))
         print(input)
         session.execute(input)
 
@@ -344,7 +344,7 @@ def myPlayList(request):
 
     tparams = {
         'playlist': html,
-        'frase': "Playlist:",
+        'frase': "Playlists:",
     }
     return render(request, "myPlayList.html", tparams)
 
