@@ -4,25 +4,29 @@
         <xsl:for-each select="channel">
 
             <xsl:for-each select="item">
+                <ul id="card">
                 <ul>
                     <li>
+                    <p>
                     <u><i>TITLE:</i></u><xsl:text>  </xsl:text>
                     <xsl:value-of select="title"/> <br />
-                    </li>
-                    <li>
+                    </p>
+                    <p>
                     <u><i>DATE:</i></u><xsl:text>  </xsl:text>
                     <xsl:value-of select="pubDate"/>  <br />
-                    </li>
-                    <li>
+                    </p>
+                    <p>
                     <u><i>DESCRIPTION:</i></u><xsl:text>  </xsl:text>
                     <xsl:value-of select="description"/> <br />
-                    </li>
-                    <li>
+                    </p>
+                    <p>
                     <u><i>LINK:</i></u><xsl:text>  </xsl:text>
                     <xsl:variable name="link" select="link"/>
-                    <a style="color:#A4CA55;" href="{link}" target="_blank">
+                    <a style="color:white;" href="{link}" target="_blank">
                     <xsl:value-of select="link"/></a>  <br />
+                    </p>
                     </li>
+                </ul>
                 </ul>
             </xsl:for-each>
 

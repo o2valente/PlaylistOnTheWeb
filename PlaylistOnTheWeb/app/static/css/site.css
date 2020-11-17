@@ -173,3 +173,25 @@ this instructions are to force the dimensions of image and its container <a>
 #else{
    display: none;
 }
+
+#card > ul li {
+  height: 6rem;
+  padding: .75rem;
+  transition: all .5s ease;
+  transform: skew(3deg);
+  overflow: hidden;
+}
+#card > ul li:hover {
+  padding-bottom: 11rem;
+  transition: all .5s ease;
+}
+#card > ul li:nth-child(3n + 1) {
+  background: seagreen;
+}
+#card > ul li:nth-child(3n + 2) {
+  background: seagreen;
+}
+#card > ul li:nth-child(3n + 3) {
+  background: seagreen;
+  box-shadow: 5px 5px 10px rgba(0,0,0, .5);
+}
