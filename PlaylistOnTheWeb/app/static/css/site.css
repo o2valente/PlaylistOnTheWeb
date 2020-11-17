@@ -169,3 +169,7 @@ this instructions are to force the dimensions of image and its container <a>
   from {opacity: 0;}
   to {opacity:1 ;}
 }
+
+#else{
+   display: none;
+}

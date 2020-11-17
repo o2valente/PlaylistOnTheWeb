@@ -72,7 +72,7 @@ def criarxml(Id, name, numeroMusicas, musicasInfo):  # musicas é dict
     schema = etree.XMLSchema(xsd_root)
     print(schema.validate(playlistDemo))
     if schema.validate(playlistDemo):
-        input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:home({})".format(etree.tostring(
+        input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:new-playlist({})".format(etree.tostring(
             playlistDemo).decode("utf-8"))
         print(input)
         session.execute(input)

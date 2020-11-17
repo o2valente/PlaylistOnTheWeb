@@ -10,7 +10,8 @@
                 </thead>
                 <tbody>
                 <xsl:for-each select="playlistDemo">
-                    <tr style="height: 130px;">
+                    <xsl:variable name="ID" select="position()"/>
+                    <tr style="height: 130px;" class="spaceUnder">
                         <th style="width: 200px;">
                             <u><i>NAME:</i></u> <xsl:text>  </xsl:text>
                             <xsl:value-of select="nome"/> <br />
@@ -21,12 +22,20 @@
                             <u><i>DATE:</i></u> <xsl:text>  </xsl:text>
                             <xsl:value-of select="dataCriacao"/>
                         </th>
-                        <th class="dropdown">
-                            <button class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown">MUSICS
+                        <td style="width: 120px;">
+                            <button class="btn btn-outline-success dropdown-toggle" type="button" onclick="showHidenItens({$ID})">MUSICS
                             <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
+                        </td>
+                        <td style="width: 250px;">
+                            <xsl:variable name="temp" select="id"/>
+                            <button class="btn btn-outline-danger" type="button" onclick="location.href='http://127.0.0.1:8000/delete?id={$temp}'" onmouseover="this.style.color='white';" onmouseout="this.style.color='';">
+                                Remove
+                            </button>
+                        </td>
+                        <td id="{$ID}" style="display:none" class="dropdown">
+                            <ul>
                             <xsl:for-each select="musicas/musica">
-                                <option>
+                                <li>
                                     <img style="width: 40px; height: 40px;">
                                     <xsl:attribute name="src">
                                         <xsl:value-of select="img"/>
@@ -37,16 +46,11 @@
                                         <xsl:text>  </xsl:text>
                                         <xsl:value-of select="nome"/>
                                     </a>
-                                </option>
+                                </li>
+                                <br/>
                             </xsl:for-each>
                             </ul>
-                        </th>
-                        <th>
-                            <xsl:variable name="temp" select="id"/>
-                            <button class="btn btn-outline-danger" type="button" onclick="location.href='http://127.0.0.1:8000/delete?id={$temp}'" onmouseover="this.style.color='white';" onmouseout="this.style.color='';">
-                                Remove
-                            </button>
-                        </th>
+                        </td>
                     </tr>
                 </xsl:for-each>
                 </tbody>

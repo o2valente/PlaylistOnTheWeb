@@ -5,10 +5,7 @@
 <h2>{{ frase }}</h2>
 
 <div class="content">
-<form action='.' method='post'>
-    {% csrf_token %}
     {{ playlist | safe}}
-</form>
 </div>
 
 {% endblock %}

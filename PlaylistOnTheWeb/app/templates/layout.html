@@ -97,6 +97,15 @@
 </html>
 
 <script>
+    function showHidenItens(a) {
+      var x = document.getElementById(a);
+      if (x.style.display == "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+
     //Filter Search
     $('#myInput').on('keyup', function () {
         var value = $(this).val().toLowerCase();
@@ -112,10 +121,6 @@
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
-
-    function alertPlayList() {
-      alert("Playlist criada com sucesso! \nConsulte na sua barra de MINHAS PLAYLISTS");
-    }
 
     var slideIndex = 1;
     showSlides(slideIndex);
