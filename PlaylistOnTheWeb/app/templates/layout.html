@@ -10,26 +10,21 @@
     <title>PlaylistOnTheWeb</title>
 
     {% load static %}
-
-    <!-- Bootstrap core CSS -->
+      <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/site.css' %}" />
     <!--Template-->
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-
-<style>
-h1,h2,h3,h4,h5,h6 {font-family: "Oswald"}
-body {font-family: "Open Sans"}
-</style>
-
-
+    <style>
+    h1,h2,h3,h4,h5,h6 {font-family: "Oswald"}
+    body {font-family: "Open Sans"}
+    </style>
 
   </head>
 
@@ -50,15 +45,15 @@ body {font-family: "Open Sans"}
             <a class="nav-link" href="/artistas">Artists</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/musicas">Musics</a>
+            <a class="nav-link" href="/musicas">Songs</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/albums">Album</a>
+            <a class="nav-link" href="/albums">Albums</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="/criarPlayList">Create PlayList</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="/myPlayList">My PlayList</a>
           </li>
           <li class="nav-item ">
@@ -74,8 +69,9 @@ body {font-family: "Open Sans"}
 
 
     <main role="main">
+        <br />
         <div class="container body-content">
-            <p></p>
+
             {% block content %} {% endblock %}
         </div> <!-- /container -->
     </main>

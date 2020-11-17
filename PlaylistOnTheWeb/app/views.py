@@ -85,11 +85,10 @@ def home(request):
     info = dict()
     res = xmltodict.parse(query)
     # print(res)
-    count = 0
-    for i in range(4):
+    for i in range(8):
         # print(c)
         c = random.choice(res["root"]["elem"])
-        print(c)
+        #print(c)
         info[c["name"]] = dict()
         info[c["name"]]["url"] = c["spotify"]
         info[c["name"]]["imagem"] = c["url"][2]
@@ -101,8 +100,22 @@ def home(request):
         else:
             info[c["name"]]["artistas"][c["artista"]["name"]] = c["artista"]["id"]
 
+    url = 'https://pitchfork.com/rss/news/'
+    resp = requests.get(url)
+    #xml = etree.fromstring(resp.content)
+    rss = dict()
+    qrss = xmltodict.parse(resp.content)
+    print(qrss)
+    for k in range(3):
+        r = random.choice(qrss["rss"]["channel"]["item"])
+        print(r)
+        rss[r["title"]] = dict()
+        rss[r["title"]]["thumbnail"] = r["media:thumbnail"]["@url"]
+        rss[r["title"]]["link"] = r["link"]
+
     tparams = {
         'tracks': info,
+        'rss': rss,
         'frase': "Home:",
     }
     return render(request, "home.html", tparams)
@@ -137,7 +150,7 @@ def musicas(request):
     tparams = {
         'artistas': True,
         'tracks': info,
-        'frase': "Músicas da Playlist Pokémon LoFi:",
+        'frase': "Songs from Playlist Pokémon LoFi:",
     }
     return render(request, "tracks.html", tparams)
 
@@ -221,7 +234,7 @@ def artistas(request):
 
     tparams = {
         'artistas': html,
-        'frase': "Artistas:",
+        'frase': "Artists:",
     }
     return render(request, "artistas.html", tparams)
 
@@ -328,7 +341,7 @@ def criarPlayList(request):
     tparams = {
         'artistas': True,
         'tracks': info,
-        'frase': "Músicas da Playlist Pokémon LoFi:",
+        'frase': "Songs from Playlist Pokémon LoFi:",
     }
     return render(request, "criarPlayList.html", tparams)
 
