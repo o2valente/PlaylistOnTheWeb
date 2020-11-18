@@ -2,26 +2,21 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="root">
             <table id="breadcrumb_album"  class="breadcrumb">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+                <thead></thead>
+                <tbody id="data-table">
                 <xsl:for-each select="playlistDemo">
                     <xsl:variable name="ID" select="position()"/>
-                    <tr style="height: 130px;" class="spaceUnder">
-                        <th style="width: 200px;">
-                            <u><i>NAME:</i></u> <xsl:text>  </xsl:text>
+                    <tr style="height: 130px; border-bottom:2px solid white;">
+                        <td style="width: 200px;">
+                            <strong><u><i>NAME:</i></u></strong> <xsl:text>  </xsl:text>
                             <xsl:value-of select="nome"/> <br />
-                            <u><i>ID:</i></u> <xsl:text>  </xsl:text>
+                            <strong><u><i>ID:</i></u></strong> <xsl:text>  </xsl:text>
                             <xsl:value-of select="id"/>  <br />
-                            <u><i>TRACKS:</i></u> <xsl:text>  </xsl:text>
+                            <strong><u><i>TRACKS:</i></u></strong> <xsl:text>  </xsl:text>
                             <xsl:value-of select="numeroDeMusicas"/>  <br />
-                            <u><i>DATE:</i></u> <xsl:text>  </xsl:text>
+                            <strong><u><i>DATE:</i></u></strong> <xsl:text>  </xsl:text>
                             <xsl:value-of select="dataCriacao"/>
-                        </th>
+                        </td>
                         <td style="width: 120px;">
                             <button class="btn btn-outline-success dropdown-toggle" type="button" onclick="showHidenItens({$ID})">MUSICS
                             <span class="caret"></span></button>
@@ -32,7 +27,7 @@
                                 Remove
                             </button>
                         </td>
-                        <td id="{$ID}" style="display:none" class="dropdown">
+                        <td id="{$ID}" style="display:none" class="dropdown"><br />
                             <ul>
                             <xsl:for-each select="musicas/musica">
                                 <li>

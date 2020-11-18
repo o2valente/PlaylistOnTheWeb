@@ -3,7 +3,7 @@
     <xsl:template match="root">
         <table id="breadcrumb_album"  class="breadcrumb">
 
-            <tbody>
+            <tbody id="data-table">
             <xsl:for-each select="album">
                 <tr style="height: 160px;">
                     <th>

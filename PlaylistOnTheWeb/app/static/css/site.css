@@ -186,12 +186,20 @@ this instructions are to force the dimensions of image and its container <a>
   transition: all .5s ease;
 }
 #card > ul li:nth-child(3n + 1) {
-  background: seagreen;
+  background: #40bf77;
 }
 #card > ul li:nth-child(3n + 2) {
-  background: seagreen;
+  background: black;
 }
 #card > ul li:nth-child(3n + 3) {
-  background: seagreen;
+  background: #53c685;
   box-shadow: 5px 5px 10px rgba(0,0,0, .5);
+}
+
+ul.five ul:nth-child(even){
+    background-color: #6a8bab;
+}
+
+ul.five ul:nth-child(odd){
+    background-color: rgb(106, 170, 126);
 }
