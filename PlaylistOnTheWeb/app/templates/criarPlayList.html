@@ -1,10 +1,17 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container tableFixHead">
 <form action='.' method='post'>
+    <p>New Playlist name: <input type="text" name="playlistName"/></p>
+    <div class="container tableFixHead">
     {% csrf_token %}
-        <p>New Playlist name: <input type="text" name="playlistName"/></p>
+        {% if erro %}
+            <div class="alert">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+              <strong>ERROR!</strong> Insert the information requested
+            </div>
+        {% endif %}
+
         <table class="table table-fixed" name="resultsTable">
             <thead class="thead-dark">
                 <tr>
@@ -17,8 +24,6 @@
                     {% if artistas %}
                         <th>Artist</th>
                     {% endif %}
-
-                    <!--<th scope="col">Sample</th>-->
                 </tr>
             </thead>
             <tbody id="data-table">
@@ -40,12 +45,10 @@
                             {% endfor %}
                         </td>
                     {% endif %}
-                    <!--<td><iframe src="{{ dados.embed }}" width="270" height="80"></iframe></td>-->
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    </form>
-</div>
-
+    </div>
+</form>
 {% endblock %}
